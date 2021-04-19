@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.20.0 (f3d54d784)
+  labels:
+    io.kompose.service: front
+  name: front
+spec:
+  selector:
+    matchLabels:
+      io.kompose.service: front
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.20.0 (f3d54d784)
+      labels:
+        io.kompose.network/myapp: "true"
+        io.kompose.service: front
+    spec:
+      containers:
+      - image: aselzk/quotes-front:v1
+        name: front
+        ports:
+        - containerPort: 3001
+        resources: {}
+      restartPolicy: Always
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.20.0 (f3d54d784)
+  labels:
+    io.kompose.service: front
+  name: front
+spec:
+  type: NodePort
+  selector:
+    io.kompose.service: front
+  ports:
+  - name: "3001"
+    port: 3001
+    targetPort: 3001
+
