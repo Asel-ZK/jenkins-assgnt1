@@ -36,8 +36,6 @@ spec:
         sh ''' 
         make run
         make fill-db
-        make stop
-        make clean
         '''
       }
     }
